@@ -1,0 +1,88 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-11-24 17:20:36
+ * @LastEditTime: 2020-12-04 14:35:42
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \electronVued:\gitup\1.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./2.js"></script>
+</head>
+<style>
+    .add{
+        margin-top: 100px;
+    }
+</style>
+<body>
+    <!-- <div id="app"><p  @click="add">{{plusOne}}--{{a}}{{msg}}</p></div> -->
+    <div id="app">
+        <p  @click="add" class="add">{{msg.a}}</p>
+        <input type="text" v-model="msg.a">
+    </div>
+</body>
+</html>
+<script>
+    const {log} = console;
+    const { h,reactive, ref, computed, readonly, createApp } = Vue
+    let option = {
+        data() {
+            return {
+                msg:{
+                    a:255
+                },
+                11: '77'
+            }
+        },
+        methods: {
+            add() {
+                this.a++
+            }
+        }
+    }
+    let compApi = {
+        template: `<div>{{name}}</div>`,
+        setup(){
+            let cc =  readonly({a:74})
+            let a = ref(100);
+            let msg = '我是你bb'
+            const plusOne = computed(() => a.value + 1)
+            function add() {
+                console.log(a, plusOne, cc.a)
+                a.value++
+                msg = plusOne
+            }
+            return {
+                plusOne,
+                add,
+                a,
+                msg
+            }
+        },
+        created(){
+            log('created')
+        },
+        mounted(){
+            log('mounted')
+        },
+        // render: () => {
+        //     return h(
+        //         'div',
+        //         {
+        //             class: '44544'
+        //         },
+        //         [this.msg,h('h1', 'A headline')],
+        //     );
+        // }
+    }
+    debugger
+    createApp(true ? option : compApi).mount('#app')
+    // log(Vue)
+
+
+</script>
