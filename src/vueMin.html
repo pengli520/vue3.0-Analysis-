@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-12-02 17:36:53
- * @LastEditTime: 2020-12-07 15:37:03
+ * @LastEditTime: 2020-12-08 14:15:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \undefinedd:\gitup\vueMin.html
@@ -18,7 +18,11 @@
 <body>
   <div id="app">
     {{ message.msg }}
-    <div @click="add">5565</div>
+    <h1>
+      {{ test.a.b.c }}
+    </h1>
+    {{p}}
+    <div @click="add(p)">5565</div>
     <input v-model="test.a.b.c" />
   </div>
 </body>
@@ -29,15 +33,16 @@
       this.data = reactive(config.data);
       // 处理method的方法
       for (const name in config.methods) {
-        this[name] = () => {
-          config.methods[name].apply(this)
+        this[name] = (arg) => {
+          // apply 传[arg]   call: 单个参数
+          config.methods[name].call(this, arg)
         };
       }
       this.renderDom(this.template);
     }
 
     renderDom(node) {
-      debugger
+      // debugger
       switch (node.nodeType) {
         case Node.TEXT_NODE:
           if (node.textContent.trim().match(/^{{([\s\S]+)}}$/)) {
@@ -54,22 +59,27 @@
               let name = attribute.value.trim().split('.');
               effect(() => node.value = compileUtils.getValue(name, this));
               node.addEventListener('input', (event) => {
-                debugger
                 compileUtils.setValue(name, this, node.value)
               });
             }
             console.log(this)
             if (attribute.name === '@click') {
+              // debugger
+              let arr = attribute.value.split('(')
+              if (arr.length > 1) {
+                arr[1] = arr[1].split(')').filter(item => item)[0]
+              } 
               // this[attribute.value]()
-              compileUtils.addEventListener(node, 'click', this[attribute.value])
+              compileUtils.addEventListener(node, 'click', () => {
+                this[arr[0]](this.data[arr[1]] || arr[1])
+              })
             }
-            // 遍历子节点
-            if (node.childNodes && node.childNodes.length) {
-              for (let child of node.childNodes) {
-                this.renderDom(child);
-              }
+          }
+          // 遍历子节点
+          if (node.childNodes && node.childNodes.length) {
+            for (let child of node.childNodes) {
+              this.renderDom(child);
             }
-            
           }
           break;
       }
@@ -91,6 +101,7 @@
       }, vm.data)
     },
     addEventListener(el, event, handler, options = false) {
+      // debugger
       el.addEventListener(event, handler, options);
     },
     removeEventListener(el, event, handler, options = false) {
@@ -101,24 +112,24 @@
   let currentEffect = null;
 
   function effect(fn) {
-    debugger
+    // debugger
     currentEffect = fn;
     fn();
     currentEffect = null;
   }
 
   function reactive(obj) {
-    debugger
+    // debugger
     return new Proxy(obj, {
       get: function (obj, prop, receiver) {
-        debugger
+        // debugger
         const res = obj[prop]
         track(obj, prop)
 
         return typeof res === 'object' && res !== null ? reactive(res) : res
       },
       set: function (obj, prop, value) {
-        debugger
+        // debugger
         obj[prop] = value;
         trigger(obj, prop)
         return true
@@ -135,7 +146,7 @@
   }
 
   function track(obj, prop) {
-    debugger
+    // debugger
     if (currentEffect) {
       console.log(obj)
       if (!effects.has(obj)) effects.set(obj, new Map());
@@ -162,6 +173,10 @@
     methods: {
       add(a){
         console.log(this, 'this', a)
+        this.console({a:4})
+      },
+      console(arg){
+        console.log('methode传参', arg)
       }
     }
   });
