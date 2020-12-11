@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-12-02 17:36:53
- * @LastEditTime: 2020-12-08 14:15:36
+ * @LastEditTime: 2020-12-11 14:06:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \undefinedd:\gitup\vueMin.html
@@ -13,20 +13,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
+  <script src="el/vnode.js"></script>
 </head>
 
 <body>
   <div id="app">
-    {{ message.msg }}
-    <h1>
-      {{ test.a.b.c }}
-    </h1>
-    {{p}}
+    <div class="one">
+      <div class="two">
+        <p>444444</p>
+      </div>
+    </div>
     <div @click="add(p)">5565</div>
     <input v-model="test.a.b.c" />
   </div>
 </body>
 <script>
+  console.time()
   class RockVue {
     constructor(config) {
       this.template = document.querySelector(config.el);
@@ -39,6 +41,8 @@
         };
       }
       this.renderDom(this.template);
+      let jsDom = compileUtils.domToVnode(this.template);
+      console.log(jsDom)
     }
 
     renderDom(node) {
@@ -107,6 +111,35 @@
     removeEventListener(el, event, handler, options = false) {
       el.removeEventListener(event, handler, options);
     },
+    // dom转换虚拟dom
+    domToVnode(nodeObj) {
+      // console.log({...[node]}, node.attributes, node.tagName, node.textContent, node.nodeType, node.childNodes)
+      return {
+        type: nodeObj.tagName.toLocaleLowerCase(),
+        props: this.filterProps(nodeObj.attributes),
+        children: this.nodeList(nodeObj.children),
+      }
+    },
+    nodeList(node) {
+      let obj = []
+      Array.from(node).forEach(item => {
+        obj.push({
+          type: item.tagName.toLocaleLowerCase(),
+          props: this.filterProps(item.attributes),
+          children: item.children.length ? this.nodeList(item.children) : [item.textContent],
+        })
+      })
+      return obj;
+    },
+    filterProps(NamedNodeMap) {
+      let props = {};
+      if (NamedNodeMap) {
+        for (let item of NamedNodeMap) {
+          props[item.name] = item.value
+        }
+      }
+      return props;
+    }
   };
   let effects = new Map();
   let currentEffect = null;
@@ -168,7 +201,52 @@
         b: {
           c: 41545
         }
-      }}
+      }},
+      c: {
+        asd:'ddd',
+      },
+      listTable: [
+        {
+            name: '大保健erre',
+            type: '分钟',
+            a: '项目名称项目名称',
+            b: 'L ',
+            c: '10',
+            d: '5',
+            e: '1880.00',
+            all: 9000,
+        },
+        {
+            name: '大保健',
+            type: '次',
+            a: '项目名称项目名称',
+            b: 'L ',
+            c: '10',
+            d: '5',
+            e: '1880.00',
+            all: 8000,
+        },
+        {
+            name: '大保健',
+            type: '次',
+            a: '项目名称项目名称',
+            b: 'L ',
+            c: '10',
+            d: '5',
+            e: '1880.00',
+            all: 8000,
+        },
+        {
+            name: '大保健',
+            type: '次',
+            a: '项目名称项目名称',
+            b: 'L ',
+            c: '10',
+            d: '5',
+            e: '1880.00',
+            all: 8000,
+        },
+    ],
     },
     methods: {
       add(a){
@@ -182,7 +260,7 @@
   });
 
 
-
+  console.timeEnd()
 </script>
 
 </html>
