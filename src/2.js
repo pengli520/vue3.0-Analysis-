@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-02 11:53:16
- * @LastEditTime: 2020-12-04 16:08:21
+ * @LastEditTime: 2020-12-18 09:23:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \undefinedd:\gitup\2.js
@@ -447,7 +447,7 @@ var Vue = (function (exports) {
       shouldTrack = last === undefined ? true : last;
   }
   function track(target, type, key) {
-    debugger
+    // debugger
     console.log(target, type, key)
       if (!shouldTrack || activeEffect === undefined) {
           return;
@@ -474,6 +474,8 @@ var Vue = (function (exports) {
       }
   }
   function trigger(target, type, key, newValue, oldValue, oldTarget) {
+    debugger
+
       const depsMap = targetMap.get(target);
       if (!depsMap) {
           // never been tracked
@@ -615,7 +617,7 @@ var Vue = (function (exports) {
               return res;
           }
           if (!isReadonly) {
-              debugger
+              // debugger
               track(target, "get" /* GET */, key);
           }
           if (shallow) {
@@ -943,7 +945,7 @@ var Vue = (function (exports) {
           else if (key === "__v_raw" /* RAW */) {
               return target;
           }
-          debugger
+          // debugger
           return Reflect.get(hasOwn(instrumentations, key) && key in target
               ? instrumentations
               : target, key, receiver);
@@ -992,7 +994,7 @@ var Vue = (function (exports) {
           : targetTypeMap(toRawType(value));
   }
   function reactive(target) {
-    //   debugger
+    //   // debugger
       console.log(target, '--------')
       // if trying to observe a readonly proxy, return the readonly version.
       if (target && target["__v_isReadonly" /* IS_READONLY */]) {
@@ -4188,7 +4190,7 @@ var Vue = (function (exports) {
                   return app;
               },
               mount(rootContainer, isHydrate) {
-                  debugger
+                  // debugger
                   if (!isMounted) {
                       const vnode = createVNode(rootComponent, rootProps);
                       // store app context on the root VNode.
@@ -4699,7 +4701,7 @@ var Vue = (function (exports) {
       // Note: functions inside this closure should use `const xxx = () => {}`
       // style in order to prevent being inlined by minifiers.
       const patch = (n1, n2, container, anchor = null, parentComponent = null, parentSuspense = null, isSVG = false, optimized = false) => {
-          debugger
+          // debugger
           // patching & not same type, unmount old tree
           if (n1 && !isSameVNodeType(n1, n2)) {
               anchor = getNextHostNode(n1);
@@ -4816,7 +4818,7 @@ var Vue = (function (exports) {
           hostRemove(vnode.anchor);
       };
       const processElement = (n1, n2, container, anchor, parentComponent, parentSuspense, isSVG, optimized) => {
-          debugger
+          // debugger
           isSVG = isSVG || n2.type === 'svg';
           if (n1 == null) {
               mountElement(n2, container, anchor, parentComponent, parentSuspense, isSVG, optimized);
@@ -4826,7 +4828,7 @@ var Vue = (function (exports) {
           }
       };
       const mountElement = (vnode, container, anchor, parentComponent, parentSuspense, isSVG, optimized) => {
-          debugger
+          // debugger
           let el;
           let vnodeHook;
           const { type, props, shapeFlag, transition, scopeId, patchFlag, dirs } = vnode;
@@ -5806,7 +5808,7 @@ var Vue = (function (exports) {
           return hostNextSibling((vnode.anchor || vnode.el));
       };
       const render = (vnode, container) => {
-          debugger
+          // debugger
           if (vnode == null) {
               if (container._vnode) {
                   unmount(container._vnode, null, null, true);
@@ -6955,7 +6957,7 @@ var Vue = (function (exports) {
       }
   }
   function createWatcher(raw, ctx, publicThis, key) {
-      debugger
+      // debugger
       const getter = key.includes('.')
           ? createPathGetter(publicThis, key)
           : () => publicThis[key];
@@ -6992,7 +6994,7 @@ var Vue = (function (exports) {
       }
   }
   function createPathGetter(ctx, path) {
-      debugger
+      // debugger
       const segments = path.split('.');
       return () => {
           let cur = ctx;
@@ -7109,7 +7111,7 @@ var Vue = (function (exports) {
           // public $xxx properties
           if (publicGetter) {
               if (key === '$attrs') {
-                  debugger
+                  // debugger
                   track(instance, "get" /* GET */, key);
                    markAttrsAccessed();
               }
@@ -8075,7 +8077,7 @@ var Vue = (function (exports) {
 
   const nodeOps = {
       insert: (child, parent, anchor) => {
-    debugger;
+    // debugger;
 
           parent.insertBefore(child, anchor || null);
       },
@@ -9243,7 +9245,8 @@ var Vue = (function (exports) {
       ensureHydrationRenderer().hydrate(...args);
   });
   const createApp = ((...args) => {
-    debugger
+      console.log(...args, 'createApp')
+    // debugger
 
       const app = ensureRenderer().createApp(...args);
       {
@@ -9252,12 +9255,12 @@ var Vue = (function (exports) {
       const { mount } = app;
       app.mount = (containerOrSelector) => {
           const container = normalizeContainer(containerOrSelector);
-          console.log(container, '挂载')
+          console.log(container, '挂载', containerOrSelector)
 
           if (!container)
               return;
           const component = app._component;
-          debugger
+          // debugger
           if (!isFunction(component) && !component.render && !component.template) {
               component.template = container.innerHTML;
               console.log(component, container.innerHTML)
@@ -11475,7 +11478,7 @@ var Vue = (function (exports) {
   const prohibitedKeywordRE = new RegExp('\\b' +
       ('do,if,for,let,new,try,var,case,else,with,await,break,catch,class,const,' +
           'super,throw,while,yield,delete,export,import,return,switch,default,' +
-          'extends,finally,continue,debugger,function,arguments,typeof,void')
+          'extends,finally,continue,// debugger,function,arguments,typeof,void')
           .split(',')
           .join('\\b|\\b') +
       '\\b');
@@ -12513,6 +12516,7 @@ var Vue = (function (exports) {
   // modifiers. We also need to merge static and dynamic class / style attributes.
   // - onXXX handlers / style: merge into array
   // - class: merge into single expression with concatenation
+  
   function dedupeProperties(properties) {
       const knownProps = new Map();
       const deduped = [];
@@ -12956,9 +12960,12 @@ var Vue = (function (exports) {
           directiveTransforms: extend({}, directiveTransforms, options.directiveTransforms || {} // user transforms
           )
       }));
-      return generate(ast, extend({}, options, {
+      const a = generate(ast, extend({}, options, {
           prefixIdentifiers
       }));
+      console.log(a, 'generate')
+      return a
+
   }
 
   const noopDirectiveTransform = () => ({ props: [] });
@@ -13453,7 +13460,6 @@ var Vue = (function (exports) {
       return (compileCache[key] = render);
   }
   registerRuntimeCompiler(compileToFunction);
-
   exports.BaseTransition = BaseTransition;
   exports.Comment = Comment;
   exports.Fragment = Fragment;

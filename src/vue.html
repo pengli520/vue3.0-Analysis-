@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-11-24 17:20:36
- * @LastEditTime: 2020-12-04 14:35:42
+ * @LastEditTime: 2020-12-16 16:42:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \electronVued:\gitup\1.html
@@ -24,6 +24,13 @@
     <div id="app">
         <p  @click="add" class="add">{{msg.a}}</p>
         <input type="text" v-model="msg.a">
+        <div>
+            <p v-for="(item, index) in index" :key="index">
+                {{item}} 
+                <input type="text" v-model="item">
+                <span @click="del(index)">删除{{index}}</span>
+            </p>
+        </div>
     </div>
 </body>
 </html>
@@ -33,6 +40,7 @@
     let option = {
         data() {
             return {
+                index: [1,2,3,4,5,6,7,8,9],
                 msg:{
                     a:255
                 },
@@ -42,6 +50,9 @@
         methods: {
             add() {
                 this.a++
+            },
+            del(index) {
+                this.index.splice(index,1);
             }
         }
     }
@@ -80,9 +91,48 @@
         //     );
         // }
     }
-    debugger
+    // debugger
     createApp(true ? option : compApi).mount('#app')
     // log(Vue)
 
+    let a = 'alert(1)'
+    function t() {
+        return new Function(a)
+    }
 
+
+// return function render(_ctx, _cache) {
+//   with (_ctx) {
+//     const { toDisplayString: _toDisplayString, createVNode: _createVNode, vModelText: _vModelText, withDirectives: _withDirectives, renderList: _renderList, Fragment: _Fragment, openBlock: _openBlock, createBlock: _createBlock, createTextVNode: _createTextVNode } = _Vue
+
+//     return (_openBlock(), _createBlock(_Fragment, null, [
+//       _createVNode("p", {
+//         onClick: add,
+//         class: "add"
+//       }, _toDisplayString(msg.a), 9 /* TEXT, PROPS */, ["onClick"]),
+//       _withDirectives(_createVNode("input", {
+//         type: "text",
+//         "onUpdate:modelValue": $event => (msg.a = $event)
+//       }, null, 8 /* PROPS */, ["onUpdate:modelValue"]), [
+//         [_vModelText, msg.a]
+//       ]),
+//       _createVNode("div", null, [
+//         (_openBlock(true), _createBlock(_Fragment, null, _renderList(index, (item, index) => {
+//           return (_openBlock(), _createBlock("p", { key: index }, [
+//             _createTextVNode(_toDisplayString(item) + " ", 1 /* TEXT */),
+//             _withDirectives(_createVNode("input", {
+//               type: "text",
+//               "onUpdate:modelValue": $event => (item = $event)
+//             }, null, 8 /* PROPS */, ["onUpdate:modelValue"]), [
+//               [_vModelText, item]
+//             ]),
+//             _createVNode("span", {
+//               onClick: $event => (del(index))
+//             }, "删除" + _toDisplayString(index), 9 /* TEXT, PROPS */, ["onClick"])
+//           ]))
+//         }), 128 /* KEYED_FRAGMENT */))
+//       ])
+//     ], 64 /* STABLE_FRAGMENT */))
+//   }
+// }
 </script>
