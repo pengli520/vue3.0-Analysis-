@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-12-02 17:36:53
- * @LastEditTime: 2020-12-21 16:13:34
+ * @LastEditTime: 2020-12-28 16:39:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \undefinedd:\gitup\vueMin.html
@@ -17,7 +17,9 @@
 
 <body>
   <div id="app">
+    55555555555555555
     <div class="one">
+      {{listTable[0].name}}
       <div class="two">
         <p>{{test.a.b.c}}</p>
       </div>
@@ -40,6 +42,8 @@
         };
       }
       this.renderDom(this.template);
+      const dom = compileUtils.domToVnode(this.template)
+      console.log(dom, 'dom')
     }
 
     renderDom(node) {
@@ -47,7 +51,14 @@
       switch (node.nodeType) {
         case Node.TEXT_NODE:
           if (node.textContent.trim().match(/^{{([\s\S]+)}}$/)) {
-            let name = RegExp.$1.trim().split('.');
+            // debugger
+            let name = RegExp.$1.trim();
+            if (name.indexOf('[')) {
+              name = compileUtils.regular(name);
+            } else {
+              name = name.split('.');
+            }
+
             effect(() => node.textContent = compileUtils.getValue(name, this));
           }
           break;
@@ -108,6 +119,39 @@
     removeEventListener(el, event, handler, options = false) {
       el.removeEventListener(event, handler, options);
     },
+    regular(name) {
+      return name.match(/[A-Za-z0-9]+|[A-Za-z0-9]+]|\.[A-Za-z0-9]+/g).map(item => item.replace(/]|\./g, ''))
+    },
+        // dom转换虚拟dom
+        domToVnode(nodeObj) {
+            // console.log({...[node]}, node.attributes, node.tagName, node.textContent, node.nodeType, node.childNodes)
+            return {
+                type: nodeObj.tagName.toLocaleLowerCase(),
+                props: this.filterProps(nodeObj.attributes),
+                children: this.nodeList(nodeObj.children),
+            }
+        },
+        nodeList(node) {
+            let obj = []
+            Array.from(node).forEach(item => {
+                obj.push({
+                    type: item.tagName.toLocaleLowerCase(),
+                    props: this.filterProps(item.attributes),
+                    children: item.children.length ? this.nodeList(item.children) : [item.textContent],
+                })
+            })
+            return obj;
+        },
+        filterProps(NamedNodeMap) {
+            let props = {};
+            if (NamedNodeMap) {
+                for (let item of NamedNodeMap) {
+                    props[item.name] = item.value
+                }
+            }
+            return props;
+        },
+
   };
   let effects = new Map();
   let currentEffect = null;
@@ -122,21 +166,24 @@
   function reactive(obj) {
     // debugger
     return new Proxy(obj, {
-      get: function (obj, prop, receiver) {
-        // debugger
-        const res = obj[prop]
+      get (obj, prop, receiver) {
+        const res = Reflect.get(obj, prop)
         track(obj, prop)
 
         return typeof res === 'object' && res !== null ? reactive(res) : res
       },
-      set: function (obj, prop, value) {
-        // debugger
-        obj[prop] = value;
+      set (obj, prop, value) {
+        const res = Reflect.set (obj, prop, value)
         trigger(obj, prop)
-        return true
+        console.log(obj, prop, value)
+        return res
       },
+      deleteProperty(obj, key){
+        delete obj[key]
+      }
     });
   }
+
 
   function trigger(obj, prop) {
     if (effects.has(obj) && effects.get(obj).has(prop)) {
@@ -228,6 +275,12 @@
 
 
   console.timeEnd()
+
+  const obj = reactive({
+    a: 411
+  })
+  obj.v= 4444
+  console.log(obj)
 </script>
 
 </html>

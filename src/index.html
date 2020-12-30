@@ -1,0 +1,80 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-12-23 15:53:19
+ * @LastEditTime: 2020-12-26 17:24:19
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \vue-next\index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./packages/vue/dist/vue.global.js"></script>
+    <script  src="./node_modules/pixi.js/dist/pixi.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="app">
+
+    </div>
+</body>
+</html>
+<script>
+    const {log} = console
+    const { createApp, h, render, createRenderer, din } = Vue
+
+    const { Application, Graphics } = PIXI
+    let game = new Application({
+        width: 500,
+        height: 1080,
+    })
+    log(Vue,game, PIXI)
+
+    document.body.append(game.view)
+    const app = h('Graphics',{x: 100, y: 200, width: 50, height: 200}, '自定义渲染器')
+    log(app, 'h')
+    function FncreateElement(type, content) {
+        let node = document.createElement(type)
+        // node.innerHTML = content
+        return node
+    }
+    function loadImg() {
+        const stage = new PIXI.Container()
+            return stage.addChild(PIXI.Sprite.from(!false
+            ? 'packages/vue/1.png'
+            : 'https://mrkj-kjj-test.oss-cn-hangzhou.aliyuncs.com//UploadFiles/images/1606183887775705.jpg'))
+    }
+    createRenderer({
+        createElement(Tag, isSVG, is) {
+            log(Tag, isSVG, is, 'createElement')
+            let el = new Graphics()
+            el.beginFill('0xff0000')
+            el.drawRect(0,0,1,1)
+            el.endFill();
+            return el
+            // return document.createElement(tag)
+        },
+        insert(child, parent, anchor) {
+            log(child, parent, anchor, 'insert')
+            parent.addChild(child)
+            // parent.insertBefore(child, anchor || null)
+        },
+        setElementText(el, text) {
+            log(el, text, 'setElementText')
+            el.textContent = text
+        },
+        patchProp(el, key, prevValue, nextValue) {
+            log(el, key, prevValue, nextValue, 'patchProp')
+            el[key] = nextValue
+        }
+    }).createApp({
+        render(){
+            return app
+        }
+    }).mount(game.stage || document.querySelector('.app'))
+
+
+    
+</script>
