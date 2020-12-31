@@ -1,19 +1,11 @@
-<!--
- * @Author: your name
- * @Date: 2020-12-26 10:49:41
- * @LastEditTime: 2020-12-30 15:58:35
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \vue-next\index1226.html
--->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <script src="./packages/vue/dist/vue.global.js"></script> -->
     <script src="./reactive.js"></script>
-    <title>Document</title>
+    <title>yarn --ignore-scipts 安装依赖 生成dev： --sourcemap</title>
 </head>
 <body>
     <div id="app">
@@ -96,12 +88,13 @@
                     app.proxy = reactive(data())
 
                     effect(() => {
-                        if (render) {
+                        if (curRender) {
                             vnode = curRender.call(app.proxy)
                         } else {
                             // dom->vnode 在vue内部做了大量工作，此处简化
-                            vnode = compile.domToVnode(compile.stringToDom(template)).call(app.proxy)
-                        }                       
+                            vnode = compile.domToVnode(compile.stringToDom(template))
+                        } 
+                        log(vnode)                      
                         render(vnode, rootContainer)
                     })
                     return app.proxy
@@ -200,5 +193,5 @@
             }
         }
     }).mount('#app')
-    log(vm, '*--')
+    log(vm, '*--', targetMap, effectStack)
 </script>

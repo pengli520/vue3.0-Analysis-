@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-30 09:21:47
- * @LastEditTime: 2020-12-30 15:21:04
+ * @LastEditTime: 2020-12-31 09:37:27
  * @LastEditors: Please set LastEditors
  * @Description: 响应式系统
  * @FilePath: \vue-next\reactive.js
