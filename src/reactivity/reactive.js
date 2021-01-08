@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-30 09:21:47
- * @LastEditTime: 2020-12-31 09:37:27
+ * @LastEditTime: 2021-01-08 14:48:09
  * @LastEditors: Please set LastEditors
  * @Description: 响应式系统
  * @FilePath: \vue-next\reactive.js
@@ -18,33 +18,10 @@ const utils = {
   }
 }
 
-// 响应式数据处理
-function reactive(target) {
-  if (!utils.isObject(target)) {
-    return target
-  }
 
-  return new Proxy(target, {
-    get(target, key) {
-      const res = Reflect.get(target, key)
-      log('get', target, key)
-      track(target, key)
-      return utils.isObject(res) ? reactive(res) : res
-    },
-    set(target, key, value) {
-      const res = Reflect.set(target, key, value)
-      log('SET', target, key, value)
-      trigger(target, key)
-      return res
-    },
-    deleteProperty(target, key) {
-      delete Reflect.deleteProperty(target, key)
-    }
-  })
-}
 
 // 副作用函数
-function effect(fn) {
+export function effect(fn) {
   try {
     effectStack.push(fn)
     fn()
@@ -78,4 +55,30 @@ function trigger(target, key) {
       .get(key)
       .forEach(dep => dep())
   }
+}
+
+
+// 响应式数据处理
+export const  reactive = (target) => {
+  if (!utils.isObject(target)) {
+    return target
+  }
+
+  return new Proxy(target, {
+    get(target, key) {
+      const res = Reflect.get(target, key)
+      console.log('get', target, key)
+      track(target, key)
+      return utils.isObject(res) ? reactive(res) : res
+    },
+    set(target, key, value) {
+      const res = Reflect.set(target, key, value)
+      console.log('SET', target, key, value)
+      trigger(target, key)
+      return res
+    },
+    deleteProperty(target, key) {
+      delete Reflect.deleteProperty(target, key)
+    }
+  })
 }
