@@ -1,20 +1,22 @@
 /*
  * @Author: your name
  * @Date: 2021-01-07 11:36:33
- * @LastEditTime: 2021-01-08 13:51:21
+ * @LastEditTime: 2021-01-11 11:05:33
  * @LastEditors: Please set LastEditors
  * @Description: dom转换ast
  * @FilePath: \vue-next-pl\src\compiler\ast-dome.js
  */
+import { transform } from './transform.js'
 export const AST = {
     // dom转换ast
-    domToVnode(dom) {
+    domToVnode(dom, context) {
         // console.log({...[node]}, node.attributes, node.tagName, node.textContent, node.nodeType, node.childNodes)
-        return {
+        const ast = {
             type: dom.tagName.toLocaleLowerCase(),
             props: this.filterProps(dom.attributes),
             children: this.nodeList(dom),
         }
+        return transform(ast, context)
     },
     nodeList(dom) {
         let obj = []

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-07 11:53:27
- * @LastEditTime: 2021-01-08 15:43:41
+ * @LastEditTime: 2021-01-11 10:59:42
  * @LastEditors: Please set LastEditors
  * @Description: 自定义渲染器
  * @FilePath: \vue-next-pl\src\runtime\createRenderer.js
@@ -29,7 +29,7 @@ const  createAppAPI = render => {
            console.log(code, codeToFn(code))
            
           }
-          console.log(vnode, 'vnode')
+          console.log(vnode, 'vnode') 
           render(vnode, rootContainer) 
         })
         return app.proxy

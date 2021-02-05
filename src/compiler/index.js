@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-08 13:54:37
- * @LastEditTime: 2021-01-08 15:33:00
+ * @LastEditTime: 2021-01-11 11:05:20
  * @LastEditors: Please set LastEditors
  * @Description: 导出ast，和code字符串。接收组件上下文绑定关系
  * @FilePath: \vue-next-pl\src\compiler\index.js
@@ -22,7 +22,7 @@ function backAstAndCode(context) {
     }
     setContext(context)
     
-    const ast = AST.domToVnode(AST.stringToDom(template))
+    const ast = AST.domToVnode(AST.stringToDom(template), context)
 
     return {
         ast,

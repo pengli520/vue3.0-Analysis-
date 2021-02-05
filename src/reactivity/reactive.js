@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-30 09:21:47
- * @LastEditTime: 2021-01-08 14:48:09
+ * @LastEditTime: 2021-02-02 10:06:24
  * @LastEditors: Please set LastEditors
  * @Description: 响应式系统
  * @FilePath: \vue-next\reactive.js
@@ -17,8 +17,6 @@ const utils = {
     return typeof obj === 'object' && obj !== null ? true : false
   }
 }
-
-
 
 // 副作用函数
 export function effect(fn) {
@@ -57,9 +55,8 @@ function trigger(target, key) {
   }
 }
 
-
 // 响应式数据处理
-export const  reactive = (target) => {
+export const reactive = target => {
   if (!utils.isObject(target)) {
     return target
   }
@@ -82,3 +79,4 @@ export const  reactive = (target) => {
     }
   })
 }
+

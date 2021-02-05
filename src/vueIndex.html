@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-12-23 15:53:19
- * @LastEditTime: 2020-12-31 15:29:30
+ * @LastEditTime: 2021-01-11 09:55:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \vue-next\index.html
@@ -23,17 +23,17 @@
 </html>
 <script>
     const {log} = console
-    const { createApp, h, render, createRenderer, din } = Vue
-
+    const { createApp, h, render, createRenderer,reactive } = Vue
+    const data = reactive({a:444})
     const { Application, Graphics } = PIXI
     let game = new Application({
         width: 500,
         height: 1080,
     })
-    log(Vue,game, PIXI)
+    log(Vue,game, PIXI, Vue, data)
 
     document.body.append(game.view)
-    const app = h('Graphics',{x: 100, y: 200, width: 50, height: 200}, '自定义渲染器')
+    const app = h('Graphics',{x: 100, y: 200, width: 50, height: 200}, '自定义渲染器' + data.a)
     log(app, 'h')
     function FncreateElement(type, content) {
         let node = document.createElement(type)
