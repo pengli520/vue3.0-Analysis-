@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-08 11:01:55
- * @LastEditTime: 2021-02-05 17:47:30
+ * @LastEditTime: 2021-02-06 09:34:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \vue-next-pl\src\main.js
@@ -11,7 +11,7 @@ import { renderer } from './runtime/createRendererDome.js'
 import { initDb, backPath,} from './runtime/diff.js'
 window._c = _c
 window._s = _s
-const { arr,s1,s2} = initDb('gas','sga')
+const { arr,s1,s2} = initDb( 'gas','sagggy')
 console.log(backPath(arr,s1,s2), arr, s1,s2)
 // 创建实列
 const app = {

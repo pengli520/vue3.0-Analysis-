@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-23 16:29:00
- * @LastEditTime: 2021-02-05 17:52:21
+ * @LastEditTime: 2021-02-06 09:11:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \vue-next-pl\src\runtime\diff.js
@@ -56,8 +56,8 @@ const backPath = (arr, s1, s2) => {
     let i = arr.length - 1
     let j = arr[0].length - 1
     while (i > 0 || j > 0) {
-        let del = arr[i-1][j] == undefined ? Infinity : arr[i-1][j]
-        let replace = arr[i-1][j-1] == undefined ? Infinity : arr[i-1][j-1]
+        let del = arr[i-1] ? arr[i-1][j] == undefined ? Infinity : arr[i-1][j] : Infinity
+        let replace = arr[i-1] ? arr[i-1][j-1] == undefined ? Infinity : arr[i-1][j-1] : Infinity
         let insert = arr[i][j-1] == undefined ? Infinity : arr[i][j-1]
         const min = minNum(del,replace,insert)
         const curVal = arr[i][j]
